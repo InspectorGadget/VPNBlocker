@@ -55,11 +55,12 @@ class Loader extends PluginBase implements Listener {
         $ip = $p->getAddress();
         $this->cfg = new Config($this->getDataFolder() . "config.yml");
             
-            foreach($this->cfg->get("blockedips") as $list) {
+            foreach($this->cfg->get("blockedips", []) as $list) {
                 
-                $find = substr($ip, 2);
+                $find = explode(".", $ip);
+                $check = strpos($list, $find);
                 
-                if(stripos($list, $find)) {
+                if($check != false) {
                     
                     $p->kick("[VPNBlocker] Please don't use a VPN Connection!");
                     $e->setCancelled();
