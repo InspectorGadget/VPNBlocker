@@ -37,14 +37,14 @@ class Loader extends PluginBase implements Listener {
     public function onEnable() {
         $this->getServer()->getPluginManager()->registerEvents($this, $this);
         $this->saveDefaultConfig();
-        $this->saveResource("blocked.yml");
-        $this->cfg = new Config($this->getDataFolder() . "blocked.yml");
+        $this->saveResource("config.yml");
+        $this->cfg = new Config($this->getDataFolder() . "config.yml");
         $number = count($this->cfg->get("blockedips"));
-        $this->getLogger()->warning("[VPNBlocker] $number Blocked IP's has been collected!");
+        $this->getLogger()->warning("$number Blocked IP's has been collected!");
     }
     
     public function onSave() {
-        $this->cfg = new Config($this->getDataFolder() . "blocked.yml");
+        $this->cfg = new Config($this->getDataFolder() . "config.yml");
         $this->cfg->save();
     }
     
@@ -53,7 +53,7 @@ class Loader extends PluginBase implements Listener {
         $p = $e->getPlayer();
         $n = $p->getName();
         $ip = $p->getAddress();
-        $this->cfg = new Config($this->getDataFolder() . "blocked.yml");
+        $this->cfg = new Config($this->getDataFolder() . "config.yml");
             
             foreach($this->cfg->get("blockedips") as $list) {
                 
