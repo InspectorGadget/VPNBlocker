@@ -32,15 +32,19 @@ use pocketmine\event\player\PlayerPreLoginEvent;
 
 class Loader extends PluginBase implements Listener {
     
+    public $cfg;
+    
     public function onEnable() {
         $this->getServer()->getPluginManager()->registerEvents($this, $this);
-        $this->cfg = new Config($this->getDataFolder() . "blocked.yml", Config::YAML);
+        $this->saveDefaultConfig();
+        $this->saveResource("blocked.yml");
+        $this->cfg = new Config($this->getDataFolder() . "blocked.yml");
         $number = count($this->cfg->get("blockedips"));
         $this->getLogger()->warning("[VPNBlocker] $number Blocked IP's has been collected!");
     }
     
     public function onSave() {
-        $this->cfg = new Config($this->getDataFolder() . "blocked.yml", Config::YAML);
+        $this->cfg = new Config($this->getDataFolder() . "blocked.yml");
         $this->cfg->save();
     }
     
@@ -49,7 +53,7 @@ class Loader extends PluginBase implements Listener {
         $p = $e->getPlayer();
         $n = $p->getName();
         $ip = $p->getAddress();
-        $this->cfg = new Config($this->getDataFolder() . "blocked.yml", Config::YAML);
+        $this->cfg = new Config($this->getDataFolder() . "blocked.yml");
             
             foreach($this->cfg->get("blockedips") as $list) {
                 
