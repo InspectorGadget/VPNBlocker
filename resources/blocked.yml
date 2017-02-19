@@ -1,0 +1,9 @@
+---
+# This "blockedips" means that this plugin will filter the first few digits only!
+# Example: 60.20.1.101.
+# "blockedips" mean the "60" not the others after the "60".
+# All rights reserved RTGDaCoder ( InspectorGadget ).
+blockedips:
+    - 60
+    - 173
+...

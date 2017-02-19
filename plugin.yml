@@ -1,0 +1,5 @@
+name: VPNBlocker
+version: 1.0.0
+main: RTG\VPNBlocker\Loader
+api: 2.1.0
+author: IG

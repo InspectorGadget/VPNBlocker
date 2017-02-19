@@ -1,7 +1,7 @@
 <?php
 
 /* 
- * Copyright (C) 2017 RTG
+ * Copyright (C) 2017 RTGDaCoder
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -23,6 +23,8 @@ namespace RTG\VPNBlocker;
 /* Essentials */
 use pocketmine\plugin\PluginBase;
 use pocketmine\event\Listener;
+use pocketmine\Server;
+use pocketmine\Player;
 
 use pocketmine\utils\Config;
 
@@ -33,11 +35,35 @@ class Loader extends PluginBase implements Listener {
     public function onEnable() {
         $this->getServer()->getPluginManager()->registerEvents($this, $this);
         $this->cfg = new Config($this->getDataFolder() . "blocked.yml", Config::YAML);
+        $number = count($this->cfg->get("blockedips"));
+        $this->getLogger()->warning("[VPNBlocker] $number Blocked IP's has been collected!");
     }
     
     public function onSave() {
         $this->cfg = new Config($this->getDataFolder() . "blocked.yml", Config::YAML);
         $this->cfg->save();
+    }
+    
+    public function onJoin(PlayerPreLoginEvent $e) {
+        
+        $p = $e->getPlayer();
+        $n = $p->getName();
+        $ip = $p->getAddress();
+        $this->cfg = new Config($this->getDataFolder() . "blocked.yml", Config::YAML);
+            
+            foreach($this->cfg->get("blockedips") as $list) {
+                
+                $find = substr($ip, 2);
+                
+                if(stripos($list, $find)) {
+                    
+                    $p->kick("[VPNBlocker] Please don't use a VPN Connection!");
+                    $e->setCancelled();
+                    
+                }
+                
+            }
+        
     }
     
     public function onDisable() {
